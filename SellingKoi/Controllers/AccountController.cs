@@ -20,6 +20,7 @@ namespace SellingKoi.Controllers
             {
                 return NotFound("No account are found !");
             }
+            
             return View(accounts);
         }
 
@@ -95,10 +96,17 @@ namespace SellingKoi.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(string username, string password)
         {
-            if (await _accountService.LoginAsync(username, password))
+            var accountlogin = await _accountService.LoginAsync(username, password);
+            if (accountlogin != null)
             {
+                var role = accountlogin.Role;
                 HttpContext.Session.SetString("Username", username);
-                return RedirectToAction("AdminPage", "Home");
+                HttpContext.Session.SetString("UserRole", role); // Lưu vai trò vào 
+                if(role == "ADMIN")
+                    return RedirectToAction("AdminPage", "Home");
+                if(role == "Customer")
+                    return RedirectToAction("Index", "Home");
+
             }
             ModelState.AddModelError("", "Tên đăng nhập hoặc mật khẩu không đúng");
             return View();

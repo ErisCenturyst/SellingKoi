@@ -19,6 +19,21 @@ namespace SellingKoi.Controllers
             _farmService = farmService;
             _dataContext = dataContext;
         }
+
+        [HttpGet]
+        public async Task<IActionResult> RouteShopping()
+        {
+            var routes = await _routeService.GetAllRoutesAsync();
+
+            if (routes == null)
+            {
+                return NotFound("No route are found !");
+            }
+            return View(routes);
+        }
+
+
+
         [HttpGet]
         public async Task<IActionResult> RouteManagement()
         {

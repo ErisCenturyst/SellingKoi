@@ -17,8 +17,8 @@ namespace SellingKoi.Models
 
         public virtual Account Account { get; set; } // Mối quan hệ với Account
         public virtual Route Route { get; set; } // Mối quan hệ với Route
-
-        public virtual ICollection<KOI> KoiList { get; set; } = new List<KOI>(); // Danh sách Koi trong Cart
+        //nhieu cart nhieu koi
+        public virtual List<KOI> KOIs { get; set; } = new List<KOI>(); // Danh sách Koi trong Cart
     }
 
 }

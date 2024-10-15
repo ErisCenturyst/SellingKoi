@@ -10,5 +10,6 @@ namespace SellingKoi.Services
         Task CreateKoiAsync(KOI Koi);
         Task UpdateKoiAsync(KOI Koi);
         Task NegateKoiAsync(Guid id);
+        Task<Pagination<KOI>> GetKOIsPaged(int page, int limit);
     }
 }

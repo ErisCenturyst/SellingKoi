@@ -11,11 +11,20 @@ namespace SellingKoi.Controllers
     {
         private readonly IKoiService _koiService;
         private readonly IFarmService _farmService;
+       
 
-        public KoiController(IKoiService koiService,IFarmService farmService)
+        public KoiController(IKoiService koiService,IFarmService farmService,DataContext dataContext)
         {
             _koiService = koiService;
             _farmService = farmService;
+ 
+        }
+
+        [HttpGet("paged")]
+        public async Task<IActionResult> GetPagedKOIs(int page = 1, int limit = 10)
+        {
+            var paginatedKOIs = await _koiService.GetKOIsPaged(page, limit);
+            return Ok(paginatedKOIs);
         }
 
 
@@ -25,6 +34,18 @@ namespace SellingKoi.Controllers
             if(kois == null)
             {
                 return NotFound("No Koi are found !"); 
+            }
+            return View(kois);
+        }
+        [HttpGet]
+        public async Task<IActionResult> KoiShopping()
+        {
+            var kois = await _koiService.GetAllKoisAsync();
+          
+
+            if (kois == null)
+            {
+                return NotFound("No Koi are found !");
             }
             return View(kois);
         }

@@ -32,10 +32,17 @@
             cursor: pointer;
         }
     </style>
+
 </head>
 
 
 <body>
+    @if (Context.Session.GetString("UserRole") != "ADMIN")
+    {
+        <script>
+            window.location.href = "@Url.Action("AccessDenied", "Home")";
+        </script>
+    }
     <h1>Admin Page</h1>
     
     @* <button class="button" onclick="editUser()">Edit User</button> *@

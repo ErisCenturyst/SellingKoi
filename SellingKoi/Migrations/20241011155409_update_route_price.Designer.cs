@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SellingKoi.Data;
 
@@ -11,9 +12,11 @@ using SellingKoi.Data;
 namespace SellingKoi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20241011155409_update_route_price")]
+    partial class update_route_price
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -126,6 +129,9 @@ namespace SellingKoi.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<Guid?>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Owner")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -135,6 +141,8 @@ namespace SellingKoi.Migrations
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
 
                     b.ToTable("Farms");
                 });
@@ -199,51 +207,14 @@ namespace SellingKoi.Migrations
                     b.Property<Guid>("RouteId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
                     b.HasIndex("RouteId");
 
                     b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("SellingKoi.Models.OrderShorten", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("Registration_date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("koisid")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("koisname")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("routeid")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("routename")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("OrtherShortens");
                 });
 
             modelBuilder.Entity("SellingKoi.Models.Route", b =>
@@ -320,6 +291,13 @@ namespace SellingKoi.Migrations
                     b.Navigation("Route");
                 });
 
+            modelBuilder.Entity("SellingKoi.Models.Farm", b =>
+                {
+                    b.HasOne("SellingKoi.Models.Order", null)
+                        .WithMany("Farms")
+                        .HasForeignKey("OrderId");
+                });
+
             modelBuilder.Entity("SellingKoi.Models.KOI", b =>
                 {
                     b.HasOne("SellingKoi.Models.Farm", "Farm")
@@ -359,6 +337,8 @@ namespace SellingKoi.Migrations
 
             modelBuilder.Entity("SellingKoi.Models.Order", b =>
                 {
+                    b.Navigation("Farms");
+
                     b.Navigation("Kois");
                 });
 

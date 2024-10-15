@@ -12,6 +12,10 @@ namespace SellingKoi.Controllers
         {
             _logger = logger;
         }
+        public IActionResult AccessDenied()
+        {
+            return View(); // ??m b?o r?ng b?n tr? v? view ?úng
+        }
 
         public IActionResult Index()
         {
@@ -31,8 +35,6 @@ namespace SellingKoi.Controllers
         {
             return View();
         }
-
-
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

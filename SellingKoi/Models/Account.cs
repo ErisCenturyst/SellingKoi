@@ -22,6 +22,11 @@ namespace SellingKoi.Models
         [Column(TypeName = "nvarchar(10)")]
 
         public required string Role { get; set; }
+        
+        public Guid CartId { get; set; }
+        public virtual Cart Cart { get; set; }
+
+
         public bool Status { get; set; } = true;
         public DateTime Registration_date { get; set; } = DateTime.Now;
 

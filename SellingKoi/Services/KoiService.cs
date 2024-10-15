@@ -41,7 +41,30 @@ namespace SellingKoi.Services
             //return await _context.KOIs.FindAsync(id);
             return await _context.KOIs.Include(k => k.Farm).FirstOrDefaultAsync(k => k.Id == id);
         }
-            
+
+        public async Task<Pagination<KOI>> GetKOIsPaged(int page, int limit)
+        {
+            var totalItem = await _context.KOIs.CountAsync();
+            var totalPage = (int)Math.Ceiling((double)totalItem / limit);
+            var skip = (page - 1) * limit;
+
+            var kois = await _context.KOIs
+                                     .Skip(skip)
+                                     .Take(limit)
+                                     .ToListAsync();
+
+            return new Pagination<KOI>
+            {
+                Page = page,
+                Limit = limit,
+                Result = kois,
+                TotalItem = totalItem,
+                TotalPage = totalPage,
+                IsNextPage = page < totalPage,
+                IsPrePage = page > 1
+            };
+        }
+
         public async Task NegateKoiAsync(Guid id)
         {
             var koi = await _context.KOIs.FindAsync(id);

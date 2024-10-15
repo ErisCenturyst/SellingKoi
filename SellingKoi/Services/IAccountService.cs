@@ -5,7 +5,7 @@ namespace SellingKoi.Services
     public interface IAccountService
     {
         //user
-        Task<bool> LoginAsync(string username, string password);
+        Task<Account> LoginAsync(string username, string password);
         Task<bool> RegisterAsync(string username, string password, string fullname);
         Task LogoutAsync();
         Task<bool> ChangePasswordAsync(string userId, string currentPassword, string newPassword);

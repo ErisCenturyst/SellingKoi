@@ -24,10 +24,21 @@ namespace SellingKoi.Models
         public bool Status { get; set; } = true;
         public DateTime Registration_date { get; set; } = DateTime.Now;
 
+
+        //luu tru hinh anh
+        [StringLength(100)]
+        [Column(TypeName = "nvarchar(100)")]
+        public string AvatarUrl { get; set; } // Thêm trường lưu hình ảnh avatar
+
+        [NotMapped]
+        public List<string> AlbumUrl { get; set; } = new List<string>(); // Thêm trường lưu các hình ảnh liên quan
+
         //FK
         public Guid FarmID { get; set; }
         //thuộc tính điều hướng
         public Farm Farm { get; set; }
+        //nhieu koi - nhieu cart
+        public virtual List<Cart> Carts { get; set; } = new List<Cart>();
 
     }
 }

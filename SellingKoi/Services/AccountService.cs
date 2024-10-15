@@ -74,14 +74,14 @@ namespace SellingKoi.Services
             return await Task.FromResult(true);
         }
 
-        public async Task<bool> LoginAsync(string username, string password)
+        public async Task<Account> LoginAsync(string username, string password)
         {
-            var account = _dataContext.Accounts.FirstOrDefault(a => a.Username == username);
+            var account = await _dataContext.Accounts.FirstOrDefaultAsync(a => a.Username == username);
             if (account == null)
             {
-                return await Task.FromResult(false);
+                return null;
             }
-            return await Task.FromResult(true);
+            return account;
         }
 
         public Task LogoutAsync()
